@@ -21,7 +21,7 @@ jobs:
     - name: Add SSH key
       uses: webfactory/ssh-agent@v0.9.0
       with:
-        key: |
+        ssh-private-key: |
           ${{ secrets.SSH_PRIVATE_KEY }}
 
     # --- Copiar código vía SSH --
