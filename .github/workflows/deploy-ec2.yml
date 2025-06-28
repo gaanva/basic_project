@@ -32,8 +32,8 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         script: |
           set -e
-          cd /srv/mi-api
+          cd /basic_project
           git fetch --all
           git reset --hard origin/main      # actualiza código
           npm ci --production               # instala deps si cambió package.json
-          pm2 reload mi-api --update-env    # zero-downtime restart
+          pm2 reload ecosystem.config.js --update-env    # zero-downtime restart
