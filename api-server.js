@@ -34,7 +34,7 @@ const checkJwt = auth({
 
 app.get('/api/external', checkJwt, (req, res) => {
   res.send({
-    msg: 'Your access token was successfully validated!',
+    msg: 'Your access token was successfully validated FULL CI-CD Rock!',
   });
 });
 
