@@ -1,0 +1,39 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches: [ main ]            # despliegue solo en main
+    paths-ignore:                 # no corras si cambian docs o readme
+      - '**/*.md'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    # (Opcional) tests o build      ##
+    # - run: npm ci && npm test     ##
+
+    # --- Configurar SSH agent ---
+    - name: Add SSH key
+      uses: webfactory/ssh-agent@v0.9.0
+      with:
+        ssh-private-key: |
+          ${{ secrets.SSH_PRIVATE_KEY }}
+
+    # --- Copiar código vía SSH --
+    - name: Deploy to EC2 via SSH
+      uses: appleboy/ssh-action@v1
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        script: |
+          set -e
+          cd /srv/mi-api
+          git fetch --all
+          git reset --hard origin/main      # actualiza código
+          npm ci --production               # instala deps si cambió package.json
+          pm2 reload mi-api --update-env    # zero-downtime restart
