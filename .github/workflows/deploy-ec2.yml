@@ -1,5 +1,4 @@
 name: Deploy to EC2
-run: echo "Key length: ${#SSH_PRIVATE_KEY}"
 
 on:
   push:
@@ -24,6 +23,12 @@ jobs:
       with:
         ssh-private-key: |
           ${{ secrets.SSH_PRIVATE_KEY }}
+
+     - name: Debug SSH key length
+        run: echo "Key length: ${#SSH_PRIVATE_KEY}"
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
 
     # --- Copiar código vía SSH --
     - name: Deploy to EC2 via SSH
