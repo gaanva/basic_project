@@ -38,6 +38,12 @@ app.get('/api/external', checkJwt, (req, res) => {
   });
 });
 
+app.get('/api/public', (req, res) => {
+  res.send({
+    msg: 'It is a public endpoint!',
+  });
+});
+
 const port = process.env.API_SERVER_PORT || 3000;
 
 app.listen(port, () => console.log(`Api started on port ${port}`));
